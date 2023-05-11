@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Properties>
+    <Property name="format" value="&quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;\t%msg%n"/>
+    <Property name="filename" value="temp.txt"/>
+  </Properties>
+
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+        <PatternLayout pattern="${format}" />
+    </Console>
+
+    <File name="FileAppender" fileName="${filename}" append="false">
+      <PatternLayout pattern="${format}" />
+    </File>
+
+  </Appenders>   
+  <Loggers>
+
+    <Root level="ALL">
+      <AppenderRef ref="FileAppender" />
+      <!--<AppenderRef ref="console" />-->
+    </Root>
+
+  </Loggers>
+</Configuration>
