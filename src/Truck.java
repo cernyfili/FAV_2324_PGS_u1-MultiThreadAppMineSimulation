@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -108,21 +107,12 @@ public class Truck implements Runnable{
                 "Truck: " + this.name + " arrived to Ferry: " + ferry.getName(),
                 (long) randomNum
         );
-        boolean last = ferry.getFerryLetch().getCount() == 1;
-
-
-        //ferry.countDownLatch();
-        ferry.getFerryLetch().countDown();
-
 
         try {
 
-            ferry.getFerryLetch().await();//waitin for ferry to be full
-        } catch (InterruptedException e) {
+            ferry.getThreadsBarier().await();//waitin for ferry to be full
+        } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
-        }
-        if (last){
-            ferry.departFerry();
         }
 
 
