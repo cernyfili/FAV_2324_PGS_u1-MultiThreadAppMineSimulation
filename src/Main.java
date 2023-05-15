@@ -14,10 +14,6 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-    static {
-        System.setProperty("log4j.configurationFile",
-                "logger-config.xml");
-    }
 
     public static final Params params = Params.getInstance();
 
@@ -47,9 +43,10 @@ public class Main {
 
     /**
      * Copy file created by logger to output file
+     *
      * @param targetPath output file path
      */
-    private static void copyFile(String targetPath){
+    private static void copyFile(String targetPath) {
         String sourcePath = "temp.txt";
 
         try {
@@ -67,8 +64,6 @@ public class Main {
             System.out.println("File not found: " + e.getMessage());
         }
     }
-
-
 
 
 }

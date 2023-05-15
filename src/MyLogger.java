@@ -1,5 +1,5 @@
-
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.StringJoiner;
 
@@ -9,8 +9,12 @@ import java.util.StringJoiner;
  */
 public class MyLogger {
 
+    static {
+        System.setProperty("log4j.configurationFile",
+                "logger-config.xml");
+    }
 
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      Logs a message with the class name, the ID of the current thread, the message, and the time it took (if provided).
