@@ -1,6 +1,6 @@
+
 import org.apache.logging.log4j.LogManager;
 
-import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -8,6 +8,7 @@ import java.util.StringJoiner;
  The logs contain information about the class name, the ID of the current thread, the message to log, and the time it took (if provided).
  */
 public class MyLogger {
+
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
@@ -32,6 +33,10 @@ public class MyLogger {
 
         logger.info(out);
 
+    }
+
+    public synchronized static void error(String message){
+        logger.error(message);
     }
 
     /**

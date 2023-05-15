@@ -14,12 +14,10 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-
     static {
         System.setProperty("log4j.configurationFile",
                 "logger-config.xml");
     }
-    public static final Logger logger = LogManager.getLogger();
 
     public static final Params params = Params.getInstance();
 

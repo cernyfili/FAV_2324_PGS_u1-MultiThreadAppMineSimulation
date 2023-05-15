@@ -25,8 +25,6 @@ public class Params {
 
     private Integer capFerry = null;
 
-    public static final Logger logger = LogManager.getLogger();
-
     public static synchronized Params getInstance() {
         if (single_instance == null)
             single_instance = new Params();
@@ -37,7 +35,7 @@ public class Params {
     public void setAllParams(List<String> values) {
 
         if(values.size() != 7) {
-            logger.error("Error when reading arguments");
+            MyLogger.error("Error when reading arguments");
             System.exit(0);
         }
 
