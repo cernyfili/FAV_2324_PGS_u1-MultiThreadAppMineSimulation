@@ -22,7 +22,7 @@ public class MyLogger {
      @param message the message to log
      @param time the time it took to execute the corresponding method (in milliseconds), or null if not available
      */
-    public synchronized static void logMassage(String className,String message, Long time) {
+    public synchronized static void logMessage(String className, String message, Long time) {
         StringJoiner stringJoiner = new StringJoiner("\"\t\"", "\"", "\"");
 
         stringJoiner.add(className);
@@ -49,7 +49,7 @@ public class MyLogger {
      @param className the name of the class from which the log is being created
      @param message the message to log
      */
-    public synchronized static void logMassage(String className,String message){
-        logMassage(className, message, null);
+    public synchronized static void logMessage(String className, String message){
+        logMessage(className, message, null);
     }
 }

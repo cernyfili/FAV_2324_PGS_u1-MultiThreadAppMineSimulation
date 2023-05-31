@@ -14,7 +14,7 @@ public class Ferry {
     private static int ferryCount = 0;
 
     // Countdown latch for maximum capacity of the ferry when dealing with truck threads
-    private CyclicBarrier threadsBarier;
+    private CyclicBarrier threadsBarrier;
 
     // Maximum load capacity of the ferry
     private static final int MAX_LOAD;
@@ -35,7 +35,7 @@ public class Ferry {
         this.name = FERRY_NAME + ferryCount++;
         DepartThread departThread = new DepartThread(this);
 
-        threadsBarier = new CyclicBarrier(MAX_LOAD, departThread);
+        threadsBarrier = new CyclicBarrier(MAX_LOAD, departThread);
 
         startTimeLoading = System.currentTimeMillis();
     }
@@ -48,9 +48,9 @@ public class Ferry {
      */
     public synchronized void departFerry(){
         long endTime = System.currentTimeMillis();
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Ferry.class.getSimpleName(),
-                "Ferry: " + this.name + " is full",
+                "Ferry: " + this.name + " departed",
                 endTime - startTimeLoading
         );
         System.out.println("Ferry: " + name + " departed");
@@ -58,8 +58,8 @@ public class Ferry {
         startTimeLoading = System.currentTimeMillis();
     }
 
-    public synchronized CyclicBarrier getThreadsBarier() {
-        return threadsBarier;
+    public synchronized CyclicBarrier getThreadsBarrier() {
+        return threadsBarrier;
     }
 
     public String getName() {

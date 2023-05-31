@@ -1,13 +1,13 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringJoiner;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class Mine {
     // maximum amount of time to wait for thread completion
-    private static final long THREADS_MAXTIME_MIN = 60;
+    private static final long THREADS_MAXTIME_MIN = 300; //5h
 
     // the truck that is currently being loaded with work units
     private Truck currentTruck;
@@ -25,9 +25,6 @@ public class Mine {
 
     // the number of work units imported into the mine
     private int workUnitImportedCount = 0;
-
-    // the number of work units that have been mined
-    private int workUnitMinedCount = 0;
 
     private ExecutorService truckES = Executors.newCachedThreadPool();
 
@@ -63,7 +60,7 @@ public class Mine {
      *
      * @return the semaphore object used for limiting the number of trucks that can access the mine at once
      */
-    public synchronized Semaphore getTruckSempahore() {
+    public synchronized Semaphore getTruckSemaphore() {
         return truckSemaphore;
     }
 
@@ -115,14 +112,20 @@ public class Mine {
      */
     public void waitUntilAllThreadsFinished() {
 
+        boolean workerThreadsFinished = true;
+        boolean truckThreadsFinished = true;
 
         try {
-            boolean workerThreadsFinished = foreman.getWorkerES().awaitTermination(THREADS_MAXTIME_MIN, TimeUnit.MINUTES);
-            boolean truckThreadsFinished = truckES.awaitTermination(THREADS_MAXTIME_MIN, TimeUnit.MINUTES);
+            workerThreadsFinished = foreman.getWorkerES().awaitTermination(THREADS_MAXTIME_MIN, TimeUnit.MINUTES);
+            truckThreadsFinished = truckES.awaitTermination(THREADS_MAXTIME_MIN, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         truckES.shutdown();
+
+        if (workerThreadsFinished == false || truckThreadsFinished == false){
+            MyLogger.error("Thread reach max time for runtime - process didnt finished");
+        }
     }
 
     /**
@@ -130,8 +133,11 @@ public class Mine {
      The current truck is then set to null and the truck executor service is shutdown.
      */
     public synchronized void checkCurrentTruckFull() {
-        if(currentTruck != null && currentTruck.isFull()){
-            //send full truck to ferry
+        if(currentTruck != null){
+            //for different log
+            currentTruck.setLastTruck(true);
+
+            //send last truck to ferry
             truckES.execute(currentTruck);
             currentTruck = null;
             truckES.shutdown();

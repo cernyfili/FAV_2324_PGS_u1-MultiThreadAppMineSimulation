@@ -1,6 +1,3 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -71,12 +68,12 @@ public class Parser {
                 if (curChar == WORK_SOURCE_CHAR) blockCounter++;
                 else if(blockCounter != 0){
                     foundWorkBlocks.add(new WorkBlock(blockCounter));
-                   // System.out.println(blockCounter);
+
                     blockCounter = 0;
                 }
             }
             if(blockCounter != 0){
-             //   System.out.println(blockCounter);
+
                 foundWorkBlocks.add(new WorkBlock(blockCounter));
             }
         }

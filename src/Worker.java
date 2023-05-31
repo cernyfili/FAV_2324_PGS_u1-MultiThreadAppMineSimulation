@@ -1,7 +1,5 @@
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  The worker works in a separate thread and continues to process work blocks until there are no more work blocks left.
  */
 public class Worker implements Runnable{
-    private final static int LOAD_TIME_MS = 1000;
+    private final static int LOAD_TIME_MS = 10;
 
     private final static int MINE_MAXTIME_MS;
 
@@ -58,7 +56,7 @@ public class Worker implements Runnable{
             miningTimeMs += workUnit.getMiningTimeMs();
         }
 
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Worker.class.getSimpleName(),
                 "Mined work block: " + workBlock.getName() + " by worker: " + this.name,
                 (long) miningTimeMs
@@ -81,7 +79,7 @@ public class Worker implements Runnable{
         workUnitCount++;
         WorkUnit workUnit = new WorkUnit(randomNum);
 
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Worker.class.getSimpleName(),
                 "Mined work unit: " + workUnit.getName() + " by worker: " + this.name,
                 (long) randomNum
@@ -139,12 +137,12 @@ public class Worker implements Runnable{
 
         while(workBlock != null){
             List<WorkUnit> workResult = processWorkBlock(workBlock);
-            //System.out.println("Worker: " + this.name + " finished work block: " + workBlock.getName());
+
 
             for (WorkUnit workUnit :
                     workResult) {
                 try {
-                    mine.getTruckSempahore().acquire();
+                    mine.getTruckSemaphore().acquire();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -153,7 +151,7 @@ public class Worker implements Runnable{
                 loadTruck(mineTruck, workUnit);
 
 
-                mine.getTruckSempahore().release();
+                mine.getTruckSemaphore().release();
             }
 
             workBlock = foreman.getWorkBlock();
@@ -166,7 +164,7 @@ public class Worker implements Runnable{
      @param workUnit the work unit to be loaded into the truck
      */
     private void loadTruck(Truck mineTruck, WorkUnit workUnit) {
-        //System.out.println("Worker: " + this.name + " loading work unit: " + workUnit.getName() + " into truck: " + mineTruck.getName());
+
         workMs(LOAD_TIME_MS);
         mineTruck.loadWorkUnit(workUnit);
     }

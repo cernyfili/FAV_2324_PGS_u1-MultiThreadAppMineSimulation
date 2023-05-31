@@ -1,6 +1,3 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,6 +14,8 @@ import java.util.concurrent.TimeUnit;
  to execute these blocks.
  */
 public class Foreman {
+    // maximum amount of time to wait for thread completion
+    private static final long THREADS_TIMEOUT_MIN = 60; //5h
     private String name;
     private LinkedList<WorkBlock> workBlockStack;
 
@@ -61,11 +60,20 @@ public class Foreman {
 
         workerES.shutdown();
 
+        boolean workerThreadsFinished = false;
+
         try {
-            workerES.awaitTermination(60, TimeUnit.MINUTES);
+            //waiting until all workers thread end
+            workerThreadsFinished = workerES.awaitTermination(THREADS_TIMEOUT_MIN, TimeUnit.MINUTES);
+
+            //send last truck to ferry
             mine.checkCurrentTruckFull();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+
+        if (workerThreadsFinished == false){
+            MyLogger.error("Thread reach max time for runtime - process didnt finished");
         }
     }
 
@@ -102,7 +110,7 @@ public class Foreman {
         System.out.println("Found work blocks: " + workBlockCount);
         System.out.println("Found work sources: " + workSourceCount);
 
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Foreman.class.getSimpleName(),
                 "Found work blocks: " + workBlockCount + ", Found work sources: " + workSourceCount
         );

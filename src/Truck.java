@@ -27,6 +27,8 @@ public class Truck implements Runnable{
 
     private long timeConstructed;
 
+    private boolean isLastTruck = false;
+
     static{
         Params params = Params.getInstance();
         LOAD_MAX = params.getCapLorry();
@@ -92,17 +94,26 @@ public class Truck implements Runnable{
         Ferry ferry = mine.getFerry();
 
         long endTime = System.currentTimeMillis();
-        MyLogger.logMassage(
-                Truck.class.getSimpleName(),
-                "Truck: " + this.name + " is full",
-                endTime - timeConstructed
-        );
+        if (isLastTruck){
+            MyLogger.logMessage(
+                    Truck.class.getSimpleName(),
+                    "Truck: " + this.name + " drove off with load: " + load.size(),
+                    endTime - timeConstructed
+            );
+        }
+        else {
+            MyLogger.logMessage(
+                    Truck.class.getSimpleName(),
+                    "Truck: " + this.name + " is full and drove off with load: " + load.size(),
+                    endTime - timeConstructed
+            );
+        }
 
         double randomNum = getRandomNumber(0,RIDE_MAXTIME_MS);
 
         rideMs(randomNum);
 
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Truck.class.getSimpleName(),
                 "Truck: " + this.name + " arrived to Ferry: " + ferry.getName(),
                 (long) randomNum
@@ -110,7 +121,7 @@ public class Truck implements Runnable{
 
         try {
 
-            ferry.getThreadsBarier().await();//waitin for ferry to be full
+            ferry.getThreadsBarrier().await();//waitin for ferry to be full
         } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
@@ -121,7 +132,7 @@ public class Truck implements Runnable{
 
         rideMs(randomNum);
 
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Truck.class.getSimpleName(),
                 "Truck: " + this.name + " arrived to final destination",
                 (long) randomNum
@@ -131,7 +142,18 @@ public class Truck implements Runnable{
 
     }
 
+
+
     public String getName() {
         return name;
+    }
+
+    /**
+     * Sets lastTruck value which depards ferry with last truck in run()
+     * even without ferry fullcapacity
+     * @param lastTruck lasttruck
+     */
+    public void setLastTruck(boolean lastTruck) {
+        isLastTruck = lastTruck;
     }
 }
