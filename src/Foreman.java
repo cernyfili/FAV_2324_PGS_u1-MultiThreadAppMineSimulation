@@ -67,7 +67,7 @@ public class Foreman {
             workerThreadsFinished = workerES.awaitTermination(THREADS_TIMEOUT_MIN, TimeUnit.MINUTES);
 
             //send last truck to ferry
-            mine.checkCurrentTruckFull();
+            mine.sendLastTruckToFerry();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

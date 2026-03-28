@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  The worker works in a separate thread and continues to process work blocks until there are no more work blocks left.
  */
 public class Worker implements Runnable{
-    private final static int LOAD_TIME_MS = 10;
+    private final static int LOAD_TIME_MS = 1000;
 
     private final static int MINE_MAXTIME_MS;
 

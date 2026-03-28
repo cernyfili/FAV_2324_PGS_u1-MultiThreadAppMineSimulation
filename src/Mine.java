@@ -132,7 +132,7 @@ public class Mine {
      Checks if the current truck is full and sends it to the ferry if it is.
      The current truck is then set to null and the truck executor service is shutdown.
      */
-    public synchronized void checkCurrentTruckFull() {
+    public synchronized void sendLastTruckToFerry() {
         if(currentTruck != null){
             //for different log
             currentTruck.setLastTruck(true);

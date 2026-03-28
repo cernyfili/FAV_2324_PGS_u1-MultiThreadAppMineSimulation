@@ -13,7 +13,7 @@ public class Ferry {
     // Counter for ferry instances
     private static int ferryCount = 0;
 
-    // Countdown latch for maximum capacity of the ferry when dealing with truck threads
+    // cyclic barrier for maximum capacity of the ferry when dealing with truck threads
     private CyclicBarrier threadsBarrier;
 
     // Maximum load capacity of the ferry
