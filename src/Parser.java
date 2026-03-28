@@ -1,6 +1,3 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,8 +18,6 @@ public class Parser {
 
     private static final char WORK_SOURCE_CHAR = 'X';
 
-    public static final Logger logger = LogManager.getLogger();
-
     /**
      Parses the input arguments and returns a list with their corresponding values.
      The input arguments must be in the format
@@ -32,7 +27,7 @@ public class Parser {
      */
     public static List<String> parseArguments(String[] args) {
         if(args.length != ARGSC){
-            logger.error("Wrong number of arguments");
+            MyLogger.error("Wrong number of arguments");
             System.exit(0);
         }
 
@@ -40,7 +35,7 @@ public class Parser {
 
         for (int i = 0; i < args.length - 1; i+=2) {
             if(!args[i].equals(ARG_NAMEPREFIX + ARG_FORMAT[i/2])){
-                logger.error("Wrong arguments format");
+                MyLogger.error("Wrong arguments format");
                 System.exit(0);
             }
 
@@ -73,12 +68,12 @@ public class Parser {
                 if (curChar == WORK_SOURCE_CHAR) blockCounter++;
                 else if(blockCounter != 0){
                     foundWorkBlocks.add(new WorkBlock(blockCounter));
-                    System.out.println(blockCounter);
+
                     blockCounter = 0;
                 }
             }
             if(blockCounter != 0){
-                System.out.println(blockCounter);
+
                 foundWorkBlocks.add(new WorkBlock(blockCounter));
             }
         }

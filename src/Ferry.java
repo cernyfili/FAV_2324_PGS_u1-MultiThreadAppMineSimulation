@@ -1,4 +1,4 @@
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * Class represents ferry which
@@ -13,8 +13,8 @@ public class Ferry {
     // Counter for ferry instances
     private static int ferryCount = 0;
 
-    // Countdown latch for maximum capacity of the ferry when dealing with truck threads
-    private CountDownLatch ferryLetch;
+    // cyclic barrier for maximum capacity of the ferry when dealing with truck threads
+    private CyclicBarrier threadsBarrier;
 
     // Maximum load capacity of the ferry
     private static final int MAX_LOAD;
@@ -33,8 +33,9 @@ public class Ferry {
      */
     public Ferry() {
         this.name = FERRY_NAME + ferryCount++;
+        DepartThread departThread = new DepartThread(this);
 
-        ferryLetch = new CountDownLatch(MAX_LOAD);
+        threadsBarrier = new CyclicBarrier(MAX_LOAD, departThread);
 
         startTimeLoading = System.currentTimeMillis();
     }
@@ -47,20 +48,18 @@ public class Ferry {
      */
     public synchronized void departFerry(){
         long endTime = System.currentTimeMillis();
-        MyLogger.logMassage(
+        MyLogger.logMessage(
                 Ferry.class.getSimpleName(),
-                "Ferry: " + this.name + " is full",
+                "Ferry: " + this.name + " departed",
                 endTime - startTimeLoading
         );
         System.out.println("Ferry: " + name + " departed");
 
-        ferryLetch = new CountDownLatch(MAX_LOAD);
-
         startTimeLoading = System.currentTimeMillis();
     }
 
-    public synchronized CountDownLatch getFerryLetch() {
-        return ferryLetch;
+    public synchronized CyclicBarrier getThreadsBarrier() {
+        return threadsBarrier;
     }
 
     public String getName() {

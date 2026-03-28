@@ -1,0 +1,5 @@
+Hlavni zadani:
+-i "data\ref_input.txt" -o output.txt -cWorker 4 -tWorker 50 -capLorry 1000 -tLorry 1000 -capFerry 4
+
+Kratke:
+-i "data\ref_input_short.txt" -o output.txt -cWorker 4 -tWorker 0 -capLorry 1 -tLorry 0 -capFerry 4

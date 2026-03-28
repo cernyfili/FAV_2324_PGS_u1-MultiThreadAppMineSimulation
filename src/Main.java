@@ -1,25 +1,10 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Properties;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-
-    static {
-        System.setProperty("log4j.configurationFile",
-                "logger-config.xml");
-    }
-    public static final Logger logger = LogManager.getLogger();
 
     public static final Params params = Params.getInstance();
 
@@ -49,9 +34,10 @@ public class Main {
 
     /**
      * Copy file created by logger to output file
+     *
      * @param targetPath output file path
      */
-    private static void copyFile(String targetPath){
+    private static void copyFile(String targetPath) {
         String sourcePath = "temp.txt";
 
         try {
@@ -69,8 +55,6 @@ public class Main {
             System.out.println("File not found: " + e.getMessage());
         }
     }
-
-
 
 
 }
