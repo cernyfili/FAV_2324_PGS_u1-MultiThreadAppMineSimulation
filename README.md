@@ -13,4 +13,4 @@ Tato aplikace simuluje provoz těžebního dolu, kde více workerů (vláken) so
 Každá část systému běží paralelně a sdílí omezené zdroje, což vytváří realistické scénáře synchronizace a potenciálních konfliktů.
 Vstupem této aplikace je soubor, definující zdroje a následně proběhne paralelní simulace, kde výstupem je log operací, které probíhali.
 
-Více informací o projektu ve složce [link](link)
+Více informací o projektu ve složce [/doc](https://github.com/cernyfili/FAV_2324_PGS_u1-MultiThreadAppMineSimulation/tree/master/doc)
